@@ -15,9 +15,8 @@ then
     echo "secret prod-cert-manager alreay exists"
 else
     kubectl create secret generic prod-cert-manager --from-file=credentials.json -n cert-manager
-    kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.16.1/cert-manager.crds.yaml
 fi
-
+kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.16.1/cert-manager.crds.yaml
 
 #####helm part####
 output=$(helm version | grep "version.BuildInfo" )
