@@ -1,13 +1,5 @@
 #!/bin/bash
 echo "------------------------------------RELOADER------------------------------------"
-namespace=$(kubectl get ns | grep "reloader" )
-echo $namespace
-if [[ -n $namespace  ]]
-then
-    echo "namespace ambassador already exists"
-else
-    kubectl create ns reloader
-fi
 
 #####helm part####
 output=$(helm version | grep "version.BuildInfo" )
@@ -19,6 +11,19 @@ else
     chmod 700 get_helm.sh
     ./get_helm.sh
 fi
+
+
+
+namespace=$(kubectl get ns | grep "reloader" )
+echo $namespace
+if [[ -n $namespace  ]]
+then
+    echo "namespace ambassador already exists"
+else
+    kubectl create ns reloader
+fi
+
+
 
 if [[ -n $repo  ]]
 then
