@@ -1,5 +1,18 @@
 #!/bin/bash
 echo "------------------------------------CERT-MANAGER------------------------------------"
+
+#####helm part####
+output=$(helm version | grep "version.BuildInfo" )
+if [[ -n $output ]]
+then
+    repo=$(helm repo list | grep jetstack)
+else
+    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    chmod 700 get_helm.sh
+    ./get_helm.sh
+fi
+
+
 namespace=$(kubectl get ns | grep "cert-manager" )
 echo $namespace
 if [[ -n $namespace  ]]
@@ -18,16 +31,7 @@ else
 fi
 kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.16.1/cert-manager.crds.yaml
 
-#####helm part####
-output=$(helm version | grep "version.BuildInfo" )
-if [[ -n $output ]]
-then
-    repo=$(helm repo list | grep jetstack)
-else
-    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    chmod 700 get_helm.sh
-    ./get_helm.sh
-fi
+
 
 if [[ -n $repo  ]]
 then
