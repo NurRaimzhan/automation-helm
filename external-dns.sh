@@ -13,10 +13,10 @@ fi
 secret=$(kubectl get secret | grep "prod-cert-manager" )
 if [[-n $secret ]]
 then
-echo "secret prod-cert-manager alreay exists"
+    echo "secret prod-cert-manager alreay exists"
 else
-kubectl create secret generic external-dns --from-file=credentials.json -n external-dns
-
+    kubectl create secret generic external-dns --from-file=credentials.json -n external-dns
+fi
 
 
 
