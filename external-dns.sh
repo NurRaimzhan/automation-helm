@@ -1,7 +1,18 @@
 #!/bin/bash
 echo "------------------------------------EXTERNAL-DNS------------------------------------"
+
+output=$(helm version | grep "version.BuildInfo" )
+if [[ -n $output ]]
+then
+    repo=$(helm repo list | grep bitnami)
+else
+    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    chmod 700 get_helm.sh
+    ./get_helm.sh
+fi
+
+
 namespace=$(kubectl get ns | grep "external-dns" )
-echo $namespace
 if [[ -n $namespace  ]]
 then
     echo "namespace external-dns already exists"
@@ -21,20 +32,6 @@ fi
 
 
 
-
-
-
-
-#####helm part####
-output=$(helm version | grep "version.BuildInfo" )
-if [[ -n $output ]]
-then
-    repo=$(helm repo list | grep bitnami)
-else
-    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    chmod 700 get_helm.sh
-    ./get_helm.sh
-fi
 
 if [[ -n $repo  ]]
 then
