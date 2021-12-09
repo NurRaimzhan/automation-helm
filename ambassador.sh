@@ -1,7 +1,18 @@
 #!/bin/bash
 echo "------------------------------------AMBASSADOR------------------------------------"
+output=$(helm version | grep "version.BuildInfo" )
+if [[ -n $output ]]
+then
+    repo=$(helm repo list | grep datawire)
+else
+    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    chmod 700 get_helm.sh
+    ./get_helm.sh
+fi
+
+
 namespace=$(kubectl get ns | grep "ambassador" )
-echo $namespace
+
 if [[ -n $namespace  ]]
 then
     echo "namespace ambassador already exists"
@@ -15,15 +26,7 @@ kubectl apply -f https://www.getambassador.io/yaml/aes-crds.yaml
 
 
 #####helm part####
-output=$(helm version | grep "version.BuildInfo" )
-if [[ -n $output ]]
-then
-    repo=$(helm repo list | grep datawire)
-else
-    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    chmod 700 get_helm.sh
-    ./get_helm.sh
-fi
+
 
 if [[ -n $repo  ]]
 then
